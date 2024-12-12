@@ -1,0 +1,11 @@
+// Environment setup
+sudo ln -s /opt/homebrew/opt/openssl@3/include/openssl .
+
+// Generate private key and certificate
+openssl genrsa -out server.key 2048
+openssl req -new -key server.key -out server.csr
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+
+// Compile command
+g++ -std=c++11 -o client_ssl client_ssl.cpp -I/opt/homebrew/opt/openssl@3/include -L/opt/homebrew/opt/openssl@3/lib -lssl -lcrypto -lpthread
+g++ -std=c++11 -o server_ssl server_ssl.cpp -I/opt/homebrew/opt/openssl@3/include -L/opt/homebrew/opt/openssl@3/lib -lssl -lcrypto -lpthread
